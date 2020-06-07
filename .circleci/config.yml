@@ -1,0 +1,30 @@
+# Golang CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-go/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/golang:1.8
+
+    working_directory: ~/mfe-moment-scheduler
+
+    steps:
+      - checkout
+      - run:
+          name: Install AWS CLI
+          command: sudo apt-get install python-dev && sudo apt-get install python-pip && sudo pip install awscli
+      - run: aws --version
+      - run:
+          name: Install AWS Go SDK
+          command: go get -u github.com/aws/aws-sdk-go && go get -u github.com/aws/aws-lambda-go/lambda
+      - run: ./build.sh
+      - deploy:
+          name: Deploy to AWS Lambda
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./deploy.sh
+            else
+              echo "Not master branch so not deploying MFE Moment Scheduler to AWS Lambda"
+            fi
