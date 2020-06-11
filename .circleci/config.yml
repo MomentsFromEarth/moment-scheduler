@@ -6,7 +6,7 @@
 jobs:
   moment-scheduler-job:
     docker:
-      - image: circleci/golang:1.8
+      - image: circleci/golang:1.13
 
     working_directory: ~/moment-scheduler
 
