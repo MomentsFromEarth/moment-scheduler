@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  moment-processor-job:
+  moment-scheduler-job:
     docker:
       - image: circleci/golang:1.8
 
@@ -31,7 +31,7 @@ jobs:
 
 version: 2.1
 workflows:
-  aws-workflow:
+  moment-scheduler-workflow:
     jobs:
-      - moment-processor-job:
+      - moment-scheduler-job:
           context: AWS
