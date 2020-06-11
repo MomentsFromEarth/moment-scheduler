@@ -1,14 +1,14 @@
-# Golang CircleCI 2.0 configuration file
+# Golang CircleCI 2.1 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 #
 version: 2
 jobs:
-  build:
+  moment-processor-job:
     docker:
       - image: circleci/golang:1.8
 
-    working_directory: ~/mfe-moment-scheduler
+    working_directory: ~/moment-scheduler
 
     steps:
       - checkout
@@ -28,3 +28,10 @@ jobs:
             else
               echo "Not master branch so not deploying MFE Moment Scheduler to AWS Lambda"
             fi
+
+version: 2.1
+workflows:
+  aws-workflow:
+    jobs:
+      - moment-processor-job:
+          context: AWS
