@@ -49,10 +49,12 @@ func momentProcessorRunning() bool {
 }
 
 func startMomentProcessor() (*ecs.RunTaskOutput, error) {
+	// TODO: change PlatformVersion to LATEST when supported
 	ecsService := ecs.New(awsSession)
 	return ecsService.RunTask(&ecs.RunTaskInput{
-		TaskDefinition: aws.String("mfe-moment-processor"),
-		LaunchType:     aws.String(ecs.LaunchTypeFargate),
+		TaskDefinition:  aws.String("mfe-moment-processor"),
+		LaunchType:      aws.String(ecs.LaunchTypeFargate),
+		PlatformVersion: aws.String("1.4.0"),
 		NetworkConfiguration: &ecs.NetworkConfiguration{
 			AwsvpcConfiguration: &ecs.AwsVpcConfiguration{
 				AssignPublicIp: aws.String(ecs.AssignPublicIpEnabled),
@@ -62,6 +64,7 @@ func startMomentProcessor() (*ecs.RunTaskOutput, error) {
 	})
 }
 
+// Handler is a function
 func Handler(request Request) (Response, error) {
 
 	awsSession, _ = session.NewSession(&aws.Config{Region: aws.String("us-east-1")})
